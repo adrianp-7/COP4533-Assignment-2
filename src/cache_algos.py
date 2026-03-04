@@ -89,7 +89,53 @@ def lru_evict(k: int, requests: List[int]) -> int:
 
     return misses
 
+def optff_evict(k: int, requests: List[int]) -> int:
+    """
+    For each miss when the cache is full:
+      look at each item in the cache
+      find when each will be requested next in the future
+      evict the one whose next use is farthest in the future
+      (or the one that will never be used again)
+    """
+    cache = []
+    misses = 0
+    m = len(requests)
 
+    for i, r in enumerate(requests):
+        if r in cache:
+            # Cache hit: do nothing
+            continue
+
+        # Cache miss
+        misses += 1
+
+        if len(cache) < k:
+            # Space available: insert the item
+            cache.append(r)
+        else:
+            # Cache full: choose victim by farthest-in-future rule
+            # For each item in cache, find its next use index
+            farthest_next_index = -1
+            victim = None
+
+            for item in cache:
+                try:
+                    # find index of next occurrence of this item
+                    next_index = requests.index(item, i + 1)
+                except ValueError:
+                    # item never used again = best candidate to evict
+                    victim = item
+                    break
+                # Keep track of the item with the farthest next use
+                if next_index > farthest_next_index:
+                    farthest_next_index = next_index
+                    victim = item
+
+            # Evict the chosen victim
+            cache.remove(victim)
+            cache.append(r)
+
+    return misses
 
 def main():
     # Change the path to point to your input file
@@ -98,10 +144,12 @@ def main():
     k, requests = read_input_file(input_path)
     fifo_misses = fifo_evict(k, requests)
     lru_misses = lru_evict(k, requests)
+    optff_misses = optff_evict(k, requests)
 
     # Print in the specified format
     print(f"FIFO: {fifo_misses}")
     print(f"LRU: {lru_misses}")
+    print(f"OPTFF: {optff_misses}")
 
 
 if __name__ == "__main__":
