@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 def read_input_file(path: str) -> Tuple[int, List[int]]:
     """
-    Read cache capacity and request sequence from a file.
+    Read cache capacity and request sequence from a file
 
     Returns:
         k: cache capacity
@@ -33,12 +33,47 @@ def read_input_file(path: str) -> Tuple[int, List[int]]:
     return k, requests
 
 
+def fifo_evict(k: int, requests: List[int]) -> int:
+    """
+    FIFO cache eviction
+
+    Args:
+        k: cache capacity
+        requests: sequence of requested item IDs
+
+    Returns:
+        Number of cache misses
+    """
+    cache = []          # will store items in insertion order
+    misses = 0
+
+    for r in requests:
+        if r in cache:
+            # Cache hit: nothing to change for FIFO
+            continue
+        # Cache miss
+        misses += 1
+        if len(cache) < k:
+            # Space available: just insert
+            cache.append(r)
+        else:
+            # Cache full: evict the oldest inserted item (front of list)
+            cache.pop(0)
+            cache.append(r)
+
+    return misses
+
+
 
 def main():
     # Change the path to point to your input file
     input_path = "../tests/sample_input.txt"
 
     k, requests = read_input_file(input_path)
+    fifo_misses = fifo_evict(k, requests)
+
+    # Print in the specified format
+    print(f"FIFO  : {fifo_misses}")
 
 
 if __name__ == "__main__":
