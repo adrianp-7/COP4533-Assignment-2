@@ -35,8 +35,6 @@ def read_input_file(path: str) -> Tuple[int, List[int]]:
 
 def fifo_evict(k: int, requests: List[int]) -> int:
     """
-    FIFO cache eviction
-
     Args:
         k: cache capacity
         requests: sequence of requested item IDs
@@ -44,7 +42,7 @@ def fifo_evict(k: int, requests: List[int]) -> int:
     Returns:
         Number of cache misses
     """
-    cache = []          # will store items in insertion order
+    cache = []          # Will store items in insertion order
     misses = 0
 
     for r in requests:
@@ -68,7 +66,7 @@ def lru_evict(k: int, requests: List[int]) -> int:
     LRU evicts the item that was least recently used
     We keep a list where the end of the list is the most recently used
     """
-    cache = []          # store items; order represents recency (oldest at index 0)
+    cache = []          # Store items; order represents recency (oldest at index 0)
     misses = 0
 
     for r in requests:
@@ -120,10 +118,10 @@ def optff_evict(k: int, requests: List[int]) -> int:
 
             for item in cache:
                 try:
-                    # find index of next occurrence of this item
+                    # Find index of next occurrence of this item
                     next_index = requests.index(item, i + 1)
                 except ValueError:
-                    # item never used again = best candidate to evict
+                    # Item never used again = best candidate to evict
                     victim = item
                     break
                 # Keep track of the item with the farthest next use
@@ -138,7 +136,7 @@ def optff_evict(k: int, requests: List[int]) -> int:
     return misses
 
 def main():
-    # Change the path to point to your input file
+    # Change the path to point to the input file
     input_path = "../tests/sample_input.txt"
 
     k, requests = read_input_file(input_path)
