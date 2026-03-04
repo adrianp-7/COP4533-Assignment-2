@@ -63,6 +63,32 @@ def fifo_evict(k: int, requests: List[int]) -> int:
 
     return misses
 
+def lru_evict(k: int, requests: List[int]) -> int:
+    """
+    LRU evicts the item that was least recently used
+    We keep a list where the end of the list is the most recently used
+    """
+    cache = []          # store items; order represents recency (oldest at index 0)
+    misses = 0
+
+    for r in requests:
+        if r in cache:
+            # Cache hit: move this item to the end (most recently used)
+            cache.remove(r)
+            cache.append(r)
+        else:
+            # Cache miss
+            misses += 1
+            if len(cache) < k:
+                # Space available: just add item as most recently used
+                cache.append(r)
+            else:
+                # Cache full: evict least recently used (front)
+                cache.pop(0)
+                cache.append(r)
+
+    return misses
+
 
 
 def main():
@@ -71,9 +97,11 @@ def main():
 
     k, requests = read_input_file(input_path)
     fifo_misses = fifo_evict(k, requests)
+    lru_misses = lru_evict(k, requests)
 
     # Print in the specified format
-    print(f"FIFO  : {fifo_misses}")
+    print(f"FIFO: {fifo_misses}")
+    print(f"LRU: {lru_misses}")
 
 
 if __name__ == "__main__":
