@@ -136,18 +136,22 @@ def optff_evict(k: int, requests: List[int]) -> int:
     return misses
 
 def main():
-    # Change the path to point to the input file
-    input_path = "../tests/sample_input.txt"
+    import sys
+
+    if len(sys.argv) < 2:
+        print("Usage: python cache_algos.py <input_file>")
+        sys.exit(1)
+
+    input_path = sys.argv[1]
 
     k, requests = read_input_file(input_path)
     fifo_misses = fifo_evict(k, requests)
     lru_misses = lru_evict(k, requests)
     optff_misses = optff_evict(k, requests)
 
-    # Print in the specified format
-    print(f"FIFO: {fifo_misses}")
-    print(f"LRU: {lru_misses}")
-    print(f"OPTFF: {optff_misses}")
+    print(f"FIFO  : {fifo_misses}")
+    print(f"LRU   : {lru_misses}")
+    print(f"OPTFF : {optff_misses}")
 
 
 if __name__ == "__main__":
