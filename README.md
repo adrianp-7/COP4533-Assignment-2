@@ -5,17 +5,17 @@
 
 ---
 
-## Running the Program
+## Running the Program (from root)
 
 Python 3
 
 ```bash
-python3 cache_algos.py <input_file>
+python3 src/cache_algos.py <input_file>
 ```
 
 **Example:**
 ```bash
-python3 cache_algos.py tests/test_1.txt
+python3 src/cache_algos.py tests/test_1.txt
 ```
 
 **Output:**
