@@ -137,6 +137,7 @@ def optff_evict(k: int, requests: List[int]) -> int:
 
 def main():
     import sys
+    import os
 
     if len(sys.argv) < 2:
         print("Usage: python cache_algos.py <input_file>")
@@ -152,6 +153,13 @@ def main():
     print(f"FIFO  : {fifo_misses}")
     print(f"LRU   : {lru_misses}")
     print(f"OPTFF : {optff_misses}")
+
+    os.makedirs("output", exist_ok=True)  # Ensure folder exists
+
+    with open("output/example.out", "w") as f:
+        f.write(f"FIFO  : {fifo_misses}\n")
+        f.write(f"LRU   : {lru_misses}\n")
+        f.write(f"OPTFF : {optff_misses}\n")
 
 
 if __name__ == "__main__":
