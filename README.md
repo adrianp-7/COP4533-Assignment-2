@@ -49,7 +49,7 @@ The input file should have two lines:
 
 ---
 
- ##Written Component
+ ## Written Component
 
 - [Question 1: Empirical Comparison](questions/Question1.md)
 - [Question 2: Bad Sequence for LRU or FIFO](questions/Question2.md)
